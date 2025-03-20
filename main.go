@@ -18,7 +18,6 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 func faqHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
 	fmt.Fprint(w, `<h1>FAQ Page</h1>
-	<p>Here are some answers to common questions.</p>
 	<ul>
 		<p>
 			<li><strong>Q: Is there a free version?</strong></li>
