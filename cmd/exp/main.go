@@ -7,12 +7,13 @@ import (
 
 type User struct {
 	Name string
-	Age int
-	Meta UserMeta
+	Bio string
+	//Age int
+	//Meta UserMeta
 }
-type UserMeta struct {
+/*type UserMeta struct {
 	Visits int
-}
+}*/
 
 func main() {
 	t,err:= template.ParseFiles("hello.gohtml")
@@ -21,10 +22,11 @@ func main() {
 	}
 	user := User{
 		Name: "Giacomo",
-		Age: 20,
-		Meta: UserMeta{
-			Visits: 10,
-		},
+		Bio: `<script>alert("You've been hacked")</script>`,
+		//Age: 20,
+		//Meta: UserMeta{
+		//	Visits: 10,
+		//},
 	}
 	err = t.Execute(os.Stdout, user)
 	if err != nil {
