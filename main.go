@@ -12,12 +12,12 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
 	tpl, err := template.ParseFiles("templates/home.gohtml")
 	if err != nil {
-		http.Error(w, "errore nel parsing del template", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	err = tpl.Execute(w,nil)
 	if err != nil {
-		http.Error(w, "errore nell'esecuzione del template", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
