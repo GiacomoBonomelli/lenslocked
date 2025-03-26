@@ -5,11 +5,21 @@ import (
 	"net/http"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"html/template"
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
-	fmt.Fprint(w, "<h1>Welcome to my amazing site!</h1>")
+	tpl, err := template.ParseFiles("templates/home.gohtml")
+	if err != nil {
+		http.Error(w, "errore nel parsing del template", http.StatusInternalServerError)
+		return
+	}
+	err = tpl.Execute(w,nil)
+	if err != nil {
+		http.Error(w, "errore nell'esecuzione del template", http.StatusInternalServerError)
+		return
+	}
 
 }
 
