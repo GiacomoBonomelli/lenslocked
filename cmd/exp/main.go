@@ -1,35 +1,47 @@
 package main
 
 import (
-	"os"
 	"html/template"
+	"net/http"
 )
 
 type User struct {
 	Name string
 	Bio string
-	//Age int
-	//Meta UserMeta
+	Age int
+	Company string
+	Meta UserMeta
 }
-/*type UserMeta struct {
+type UserMeta struct {
 	Visits int
-}*/
+	Likes int
+}
 
-func main() {
-	t,err:= template.ParseFiles("hello.gohtml")
+func helloHandler(w http.ResponseWriter , r *http.Request){
+	w.Header().Set("Content-Type", "text/html charset=utf-8")
+	tpl,err:= template.ParseFiles("hello.gohtml")
 	if err != nil {
-		panic(err)
+		http.Error(w,err.Error(),http.StatusInternalServerError)
+		return
 	}
 	user := User{
 		Name: "Giacomo",
-		Bio: `<script>alert("You've been hacked")</script>`,
-		//Age: 20,
-		//Meta: UserMeta{
-		//	Visits: 10,
-		//},
+		Bio: "Web Dev",
+		Age: 33,
+		Company: "Unknown",
+		Meta: UserMeta{
+			Visits: 10,
+			Likes: 50,
+		},
 	}
-	err = t.Execute(os.Stdout, user)
-	if err != nil {
-		panic(err)
+	err = tpl.Execute(w,user)
+	if err != nil{
+		http.Error(w,err.Error(), http.StatusInternalServerError)
+		return
 	}
+	
+}
+func main() {
+	http.HandleFunc("/hello",helloHandler)
+	http.ListenAndServe(":3000",nil)
 }

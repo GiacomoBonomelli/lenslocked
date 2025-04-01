@@ -1,9 +1,18 @@
-<h1>Hello, {{.Name}}</h1>
-<p>Bio:{{.Bio}}</p>
-<script>
-const user = {
-	"name": "{{.Name}}",
-	"bio": "{{.Bio}}",
-}
-console.log(user);
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<h1>Hello, {{.Name}}</h1>
+	<p>Bio:{{.Bio}}</p>
+	<p>Age:{{.Age}}</p>
+	<p>Company:{{.Company}}</p>
+	<p>Visits:{{.Meta.Visits}}</p>
+	<p>Likes:{{.Meta.Likes}}</p>
+	{{if gt .Meta.Visits 5}}
+		<h1>Continua così</h1>
+	{{else}}
+		<h1>Impegnati di più</h1>
+	{{end}}
+</body>
