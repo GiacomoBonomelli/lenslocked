@@ -6,11 +6,10 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"html/template"
-	"github.com/GiacomoBonomelli/lenslocked/views"	
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string){
-	t,err:=views.Parse(filepath) // fa il parsing del file html e mi restituisce un oggetto di tipo Template
+	t,err:=lenslocked/views.Parse(filepath) // fa il parsing del file html e mi restituisce un oggetto di tipo Template
 	if err != nil {
 		log.Printf("parsing template: %v" ,err)
 		http.Error(w,"There was an error parsing the template.",http.StatusInternalServerError)
