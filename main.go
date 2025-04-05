@@ -10,7 +10,7 @@ import (
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
-	tpl, err := template.ParseFiles(filepath)
+	tpl, err := template.ParseFiles(filepath) //crea un oggetto di tipo template
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
