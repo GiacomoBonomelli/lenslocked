@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/GiacomoBonomelli/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/GiacomoBonomelli/lenslocked/views"
+	"github.com/GiacomoBonomelli/lenslocked/controllers"
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
@@ -20,20 +20,6 @@ func executeTemplate(w http.ResponseWriter, filepath string) {
 	t.Execute(w, nil)
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tplpath := "templates/home.gohtml"
-	executeTemplate(w, tplpath)
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	tplpath := "templates/contact.gohtml"
-	executeTemplate(w, tplpath)
-}
-
-func faqHandler(w http.ResponseWriter, r *http.Request) {
-	tplpath := "templates/faq.gohtml"
-	executeTemplate(w, tplpath)
-}
 
 func userHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
@@ -59,7 +45,10 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }  */
 
-/* type Router struct{}
+/* 
+Un modo per scrivere un router
+
+type Router struct{} 
 
 func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -74,16 +63,34 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 } */
 
+
 func main() {
 	//var router Router
 	// Diversi modi per gestire le routes
 	//http.HandleFunc("/", pathHandler)
 	//http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
-	r := chi.NewRouter()
 
-	r.Get("/", homeHandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/faq", faqHandler)
+	
+	r := chi.NewRouter()
+	//parse the template
+	tpl,err:= views.Parse("templates/home.gohtml")
+	if err!=nil{
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	tpl,err= views.Parse("templates/contact.gohtml")
+	if err!=nil{
+		panic(err)
+	}
+	r.Get("/contact", controllers.StaticHandler(tpl))
+	
+	tpl,err= views.Parse("templates/faq.gohtml")
+	if err!=nil{
+		panic(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(tpl))
+	
 	// Route con logger
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Logger) // logger solo per questo gruppo
