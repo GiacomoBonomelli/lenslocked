@@ -1,37 +1,31 @@
-package main
+package views
 
-import(
+import (
 	"fmt"
 	"html/template"
 	"net/http"
 )
 
-type Template struct{
+type Template struct {
 	htmlTpl *template.Template // questo è un attributo di tipo template
 }
 
-
-func Parse(filepath string) (Template,error){
+func Parse(filepath string) (Template, error) {
 	tpl, err := template.ParseFiles(filepath) //crea un oggetto di tipo template
 	if err != nil {
-		return Template{},fmt.Errorf("parsing template %w",err)
+		return Template{}, fmt.Errorf("parsing template %w", err)
 	}
 	return Template{
-		htmlTpl:tpl,
-	},nill
+		htmlTpl: tpl,
+	}, nil
 }
 
-//Metodo per un oggetto di tipo Template
-func (t Template) Execute(w http.ResponseWriter,data interface{}){
+// Metodo per un oggetto di tipo Template
+func (t Template) Execute(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
-	err := t.htmlTpl.Execute(w,data)
+	err := t.htmlTpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-	
-
-func main(){
-
 }

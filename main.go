@@ -2,20 +2,22 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/GiacomoBonomelli/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"html/template"
 )
 
-func executeTemplate(w http.ResponseWriter, filepath string){
-	t,err:=lenslocked/views.Parse(filepath) // fa il parsing del file html e mi restituisce un oggetto di tipo Template
+func executeTemplate(w http.ResponseWriter, filepath string) {
+	t, err := views.Parse(filepath) // fa il parsing del file html e mi restituisce un oggetto di tipo Template
 	if err != nil {
-		log.Printf("parsing template: %v" ,err)
-		http.Error(w,"There was an error parsing the template.",http.StatusInternalServerError)
+		log.Printf("parsing template: %v", err)
+		http.Error(w, "There was an error parsing the template.", http.StatusInternalServerError)
 		return
 	}
-	t.Execute(w,nil)
+	t.Execute(w, nil)
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +46,6 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprint(w, "<h1>We could not find the page you were looking for</h1><p>Please email us if you keep being sent to an invalid page.</p>")
 }
-
 
 /* func pathHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -78,8 +79,7 @@ func main() {
 	// Diversi modi per gestire le routes
 	//http.HandleFunc("/", pathHandler)
 	//http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
-	r:= chi.NewRouter()
-	 
+	r := chi.NewRouter()
 
 	r.Get("/", homeHandler)
 	r.Get("/contact", contactHandler)
