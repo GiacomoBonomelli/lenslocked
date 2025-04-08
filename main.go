@@ -72,24 +72,12 @@ func main() {
 
 	
 	r := chi.NewRouter()
-	//parse the template
-	tpl,err:= views.Parse("templates/home.gohtml")
-	if err!=nil{
-		panic(err)
-	}
-	r.Get("/", controllers.StaticHandler(tpl))
+	//check the template for error and parse it	
+	r.Get("/", controllers.StaticHandler(views.Must(views.Parse("templates/home.gohtml"))))
 
-	tpl,err= views.Parse("templates/contact.gohtml")
-	if err!=nil{
-		panic(err)
-	}
-	r.Get("/contact", controllers.StaticHandler(tpl))
-	
-	tpl,err= views.Parse("templates/faq.gohtml")
-	if err!=nil{
-		panic(err)
-	}
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	r.Get("/contact", controllers.StaticHandler(views.Must(views.Parse("templates/contact.gohtml"))))
+
+	r.Get("/faq", controllers.StaticHandler(views.Must(views.Parse("templates/faq.gohtml"))))
 	
 	// Route con logger
 	r.Group(func(r chi.Router) {

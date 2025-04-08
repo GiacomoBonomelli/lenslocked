@@ -10,6 +10,13 @@ type Template struct {
 	htmlTpl *template.Template // questo è un attributo di tipo template
 }
 
+func Must(t Template, err error) (Template){
+	if err!= nil{
+		panic(err)
+	}
+	return t
+}
+
 func Parse(filepath string) (Template, error) {
 	tpl, err := template.ParseFiles(filepath) //crea un oggetto di tipo template
 	if err != nil {
