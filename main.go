@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/GiacomoBonomelli/lenslocked/templates"
+	"github.com/GiacomoBonomelli/lenslocked/controllers"
+	"github.com/GiacomoBonomelli/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/GiacomoBonomelli/lenslocked/views"
-	"github.com/GiacomoBonomelli/lenslocked/controllers"
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
@@ -19,7 +20,6 @@ func executeTemplate(w http.ResponseWriter, filepath string) {
 	}
 	t.Execute(w, nil)
 }
-
 
 func userHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
@@ -45,10 +45,10 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }  */
 
-/* 
+/*
 Un modo per scrivere un router
 
-type Router struct{} 
+type Router struct{}
 
 func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -63,22 +63,20 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 } */
 
-
 func main() {
 	//var router Router
 	// Diversi modi per gestire le routes
 	//http.HandleFunc("/", pathHandler)
 	//http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
 
-	
 	r := chi.NewRouter()
-	//check the template for error and parse it	
-	r.Get("/", controllers.StaticHandler(views.Must(views.Parse("templates/home.gohtml"))))
+	//check the template for error and parse it
+	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml"))))
 
-	r.Get("/contact", controllers.StaticHandler(views.Must(views.Parse("templates/contact.gohtml"))))
+	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "contact.gohtml"))))
 
-	r.Get("/faq", controllers.StaticHandler(views.Must(views.Parse("templates/faq.gohtml"))))
-	
+	r.Get("/faq", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "faq.gohtml"))))
+
 	// Route con logger
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Logger) // logger solo per questo gruppo
