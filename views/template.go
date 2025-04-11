@@ -18,8 +18,8 @@ func Must(t Template, err error) (Template){
 	return t
 }
 
-func ParseFS(fs fs.FS, patterns string) (Template,error){
-	tpl,err := template.ParseFS(fs,patterns)
+func ParseFS(fs fs.FS, patterns ...string) (Template,error){ //variadic parameter
+	tpl,err := template.ParseFS(fs,patterns...) //all'interno della funzione,patterns è usata come slice di stringhe
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template %w", err)
 	}
