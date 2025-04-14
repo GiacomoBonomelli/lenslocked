@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"github.com/GiacomoBonomelli/lenslocked/templates"
+
 	"github.com/GiacomoBonomelli/lenslocked/controllers"
+	"github.com/GiacomoBonomelli/lenslocked/templates"
 	"github.com/GiacomoBonomelli/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -71,11 +72,11 @@ func main() {
 
 	r := chi.NewRouter()
 	//check the template for error and parse it
-	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml"))))
+	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml","layout-parts.gohtml"))))
 
-	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "contact.gohtml"))))
+	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "contact.gohtml", "layout-parts.gohtml"))))
 
-	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml"))))
+	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "layout-parts.gohtml"))))
 
 	// Route con logger
 	r.Group(func(r chi.Router) {
