@@ -72,9 +72,15 @@ func main() {
 
 	r := chi.NewRouter()
 	//check the template for error and parse it
-	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml","tailwind.gohtml"))))
+	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))))
 
-	r.Get("/signup", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))))
+	//Creo un oggetto di tipo controllers Users
+	usersC := controllers.Users{}
+	// faccio il parsing del template e lo salvo nel controllers Users.
+	//Così quando arriva la richiesta dal web, si dovrà solo eseguire il template
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
+	//indirizzo l'utente al template associato all'endpoint "/signup"
+	r.Get("/signup", usersC.New)
 
 	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
 
