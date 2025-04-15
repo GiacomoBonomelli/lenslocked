@@ -2,18 +2,16 @@ package controllers
 
 import (
 	"net/http"
-
-	"github.com/GiacomoBonomelli/lenslocked/views"
 )
 
 // restituisce una handler func
-func StaticHandler(tpl views.Template) http.HandlerFunc {
+func StaticHandler(tpl Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tpl.Execute(w, nil)
 	}
 }
 
-func FAQ(tpl views.Template) http.HandlerFunc {
+func FAQ(tpl Template) http.HandlerFunc {
 	questions := []struct {
 		Question string
 		Answer   string // si potrebbe usare il tipo template.HTMl. Dice che è ok renderizzare la risposta come
