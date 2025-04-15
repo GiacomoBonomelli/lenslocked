@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header class="bg-gradient-to-r from-blue-800 to-indigo-800">
@@ -28,6 +29,20 @@
 
 
 {{define "footer"}}
+<footer class="bg-gradient-to-r from-blue-800 to-indigo-800">
+    <div class="flex flex-row">
+        <nav class="px-8 py-6 flex items-center text-white flex-grow">
+            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Condizioni Generali</a>
+            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Regole della Privacy</a>
+            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Uso dei Cookie</a>
+        </nav>
+        <div>
+            <a class="text-lg pr-2 text-white" href="https://facebook.com" target="_blank" ><i class="fa-brands fa-facebook"></i></a>
+            <a class="text-lg pr-2 text-white" href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a class="text-lg pr-2 text-white" href="https://www.linkedin.com/zillow" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
 {{end}}
