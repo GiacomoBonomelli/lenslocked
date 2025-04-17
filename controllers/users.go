@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -21,4 +22,10 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 
 	//execute the template
 	u.Templates.New.Execute(w, nil)
+}
+
+//function that is going to handle the post request made on the form submission
+func (u Users) Create(w http.ResponseWriter, r *http.Request){
+	fmt.Fprintf(w,"La mail è:%s",r.FormValue("email"))
+	fmt.Fprintf(w,"La password è:%s",r.FormValue("password"))
 }
