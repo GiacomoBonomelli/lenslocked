@@ -21,7 +21,12 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 	//So its best practice to parse it somewhere else.
 
 	//execute the template
-	u.Templates.New.Execute(w, nil)
+	var data struct{
+		Email string
+		Password string
+	}
+	data.Email = r.FormValue("email")
+	u.Templates.New.Execute(w,data )
 }
 
 //function that is going to handle the post request made on the form submission
