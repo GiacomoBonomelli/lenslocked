@@ -1,47 +1,21 @@
 package main
 
 import (
-	"html/template"
-	"net/http"
+	"database/sql"
+	"fmt"
+
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-type User struct {
-	Name string
-	Bio string
-	Age int
-	Company string
-	Meta UserMeta
-}
-type UserMeta struct {
-	Visits int
-	Likes int
-}
-
-func helloHandler(w http.ResponseWriter , r *http.Request){
-	w.Header().Set("Content-Type", "text/html charset=utf-8")
-	tpl,err:= template.ParseFiles("hello.gohtml")
-	if err != nil {
-		http.Error(w,err.Error(),http.StatusInternalServerError)
-		return
-	}
-	user := User{
-		Name: "Giacomo",
-		Bio: "Web Dev",
-		Age: 33,
-		Company: "Unknown",
-		Meta: UserMeta{
-			Visits: 10,
-			Likes: 50,
-		},
-	}
-	err = tpl.Execute(w,user)
-	if err != nil{
-		http.Error(w,err.Error(), http.StatusInternalServerError)
-		return
-	}
-	
-}
 func main() {
-	http.HandleFunc("/hello",helloHandler)
-	http.ListenAndServe(":3000",nil)
+	db, err := sql.Open("pgx", "host=localhost port=5434 user=baloo password=junglebook dbname=lenslocked sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected!")
 }
