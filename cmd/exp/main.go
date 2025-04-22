@@ -56,13 +56,29 @@ func main() {
 	fmt.Println("Tables created")
 
 	// Insert some data
-	name := "Giacomo"
+	/* name := "Giacomo"
 	email := "bonomellisrl@gmail.com"
-	_, err = db.Exec(`
+	/* _, err = db.Exec(`
 		INSERT INTO users (name,email) 
-		VALUES ($1,$2);`, name, email)
+		VALUES ($1,$2);`, name, email) 
+	row= db.QueryRow(`
+		INSERT INTO users (name,email) 
+		VALUES ($1,$2) RETURNING ID;`, name, email))
+	var id int
+	err = row.Scan(&id)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("User created")
+	fmt.Println("User created. id=",id) */
+	id:=1
+	row:=db.QueryRow(`
+		SELECT name,email 
+		FROM users
+		WHERE id=$1;`,id)
+	var name,email string
+	err = row.Scan(&name,&email)
+	if err!=nil{
+		panic(err)
+	}
+	fmt.Printf("User information: name=%s, email=%s",name,email)
 }
