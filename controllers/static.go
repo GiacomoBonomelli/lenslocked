@@ -4,13 +4,14 @@ import (
 	"net/http"
 )
 
-// restituisce una handler func
+// Viene eseguito il template
 func StaticHandler(tpl Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tpl.Execute(w, nil)
 	}
 }
 
+// Viene eseguito il template FAQ
 func FAQ(tpl Template) http.HandlerFunc {
 	questions := []struct {
 		Question string

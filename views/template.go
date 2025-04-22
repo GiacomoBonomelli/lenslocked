@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"io/fs"
 )
-
+// creiamo un oggetto Template per poter lavorare con diverse tipologie di file (es:HTML,JSON,ecc...)
 type Template struct {
-	htmlTpl *template.Template // questo è un attributo di tipo template
+	htmlTpl *template.Template // questo attributo ha come tipo un oggetto template.
 }
 
 func Must(t Template, err error) (Template){
@@ -18,6 +18,7 @@ func Must(t Template, err error) (Template){
 	return t
 }
 
+// Per fare il parsing dei templates indipendentemente dalla loro posizione nel file system
 func ParseFS(fs fs.FS, patterns ...string) (Template,error){ //variadic parameter
 	tpl,err := template.ParseFS(fs,patterns...) //all'interno della funzione,patterns è usata come slice di stringhe
 	if err != nil {

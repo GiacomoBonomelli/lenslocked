@@ -1,0 +1,14 @@
+- Package Views
+  Nel file template.go viene creato un oggetto Template che servirà per gestire
+  templates di diverso tipo (es.HTML,JSON).
+  Sono state definite le funzioni Parse,Must e Execute,già appartenenti al Package
+  html/template, per le istanze di tipo Template.
+
+- Package Controllers
+  I vari file presenti nel package controllers gestiscono le richieste provenienti 
+  dagli utenti. 
+  Eseguono: 
+  - il parsing e l'esecuzione dei templates;
+  - l'eventuale pasaggio di dati ai template;
+  - la richiesta dei dati alla parte di model (es:database), per poi manipolarli e
+    riempire i templates.
