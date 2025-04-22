@@ -56,7 +56,7 @@ func main() {
 	fmt.Println("Tables created")
 
 	// Insert some data
-	name := "Giacomo"
+	/* name := "Giacomo"
 	email := "bonomellisrl@gmail.com"
 	row := db.QueryRow(`
 		INSERT INTO users (name,email) 
@@ -67,12 +67,14 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("User created. id=", id)
-
+ */
 	// Query the user
-	row = db.QueryRow(`
+	id:=1
+	row := db.QueryRow(`
 		SELECT name,email 
 		FROM users
 		WHERE id=$1;`, id)
+	var name,email string
 	err = row.Scan(&name, &email)
 	if err != nil {
 		panic(err)
