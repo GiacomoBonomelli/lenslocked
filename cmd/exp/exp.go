@@ -38,7 +38,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Connected!")
-	/* _, err = db.Exec(`
+	 _, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS users(
 			id SERIAL PRIMARY KEY,
 			name TEXT,
@@ -69,7 +69,7 @@ func main() {
 	fmt.Println("User created. id=", id)
 
 	// Query the user
-	 	id:=1
+	 /*	id:=1
 	   	row := db.QueryRow(`
 	   		SELECT name,email
 	   		FROM users
@@ -80,7 +80,7 @@ func main() {
 	   		panic(err)
 	   	}
 	   	fmt.Printf("User information: name=%s, email=%s\n", name, email)
-
+	*/
 	user_id := 1
 	for i := 1; i <= 5; i++ {
 		amount := i * 100
@@ -93,6 +93,7 @@ func main() {
 		}
 	}
 	fmt.Println("Created fake orders.")
+	/*
 	userID := 1
 	type Order struct {
 		ID          int
