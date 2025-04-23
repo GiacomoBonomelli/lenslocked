@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "strconv"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
