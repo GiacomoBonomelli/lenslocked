@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/GiacomoBonomelli/lenslocked/models"
 )
 
 type PostgresConfig struct {
@@ -38,7 +38,19 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Connected!")
-	 _, err = db.Exec(`
+
+	us:= models.UserService{
+		DB: db,
+	}
+
+	user,err := us.Create("gbonomelli483@gmail.com","abc123")
+	
+	if err!=nil{
+		panic(err)
+	}
+	fmt.Println(user)
+
+	 /* _, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS users(
 			id SERIAL PRIMARY KEY,
 			name TEXT,
@@ -81,7 +93,7 @@ func main() {
 	   	}
 	   	fmt.Printf("User information: name=%s, email=%s\n", name, email)
 	*/
-	user_id := 1
+	/* user_id := 1
 	for i := 1; i <= 5; i++ {
 		amount := i * 100
 		desc := fmt.Sprintf("Fake order #%d", i)
@@ -92,7 +104,7 @@ func main() {
 			panic(err)
 		}
 	}
-	fmt.Println("Created fake orders.")
+	fmt.Println("Created fake orders.") */
 	/*
 	userID := 1
 	type Order struct {
@@ -125,5 +137,5 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Orders:", orders) */
-
+ 
 }
