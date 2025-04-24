@@ -18,7 +18,12 @@ func main() {
 }
 
 func compare(password, hash string) {
-	fmt.Printf("Compare %q to %q\n", password, hash)
+	err:=bcrypt.CompareHashAndPassword([]byte(hash),[]byte(password))
+	if err!=nil{
+		fmt.Printf("Password is invalid %v\n",password)
+		return
+	}
+	fmt.Println("Password is correct")
 }
 
 func hash(password string) {
