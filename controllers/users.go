@@ -10,6 +10,7 @@ import (
 type Users struct {
 	Templates struct {
 		New Template // it allows to create a Template object
+		SignIn Template
 	}
 	UserService *models.UserService // collegamento tra il controller e il model. Permette di creare gli utenti
 }
@@ -26,7 +27,6 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 	//execute the template
 	var data struct{
 		Email string
-		Password string
 	}
 	data.Email = r.FormValue("email")
 	u.Templates.New.Execute(w,data )
@@ -42,4 +42,18 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	fmt.Fprintf(w, "User created: %+v", user)
+}
+
+func (u Users) SignIn(w http.ResponseWriter, r *http.Request) {
+	//We need a view to render
+	//We need to parse the view before the controller
+	//handles this request.
+	//So its best practice to parse it somewhere else.
+
+	//execute the template
+	var data struct{
+		Email string
+	}
+	data.Email = r.FormValue("email")
+	u.Templates.SignIn.Execute(w,data)
 }

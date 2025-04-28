@@ -95,10 +95,13 @@ func main() {
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
 	//indirizzo l'utente al template associato all'endpoint "/signup"
 	r.Get("/signup", usersC.New)
-	
-	//Route seguita quando si esegue il post del form signup
-	r.Post("/users" ,usersC.Create)
-	
+	// Route seguita quando si esegue il post del form signup
+	r.Post("/users", usersC.Create)
+
+	//route per il signin
+	usersC.Templates.SignIn = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "tailwind.gohtml"))
+	r.Get("/signin", usersC.SignIn)
+
 	r.Get("/contact", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
 	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
 
