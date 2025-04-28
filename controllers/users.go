@@ -3,12 +3,15 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/GiacomoBonomelli/lenslocked/models"
 )
 
 type Users struct {
 	Templates struct {
 		New Template // it allows to create a Template object
 	}
+	UserService *models.UserService // collegamento tra il controller e il model. Permette di creare gli utenti
 }
 
 //new and edit to render forms

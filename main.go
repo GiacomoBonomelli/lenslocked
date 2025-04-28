@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/GiacomoBonomelli/lenslocked/controllers"
+	"github.com/GiacomoBonomelli/lenslocked/models"
 	"github.com/GiacomoBonomelli/lenslocked/templates"
 	"github.com/GiacomoBonomelli/lenslocked/views"
 	"github.com/go-chi/chi/v5"
@@ -74,8 +75,21 @@ func main() {
 	//check the template for error and parse it
 	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))))
 
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	// ci saranno diversi services
+	userService := models.UserService{
+		DB: db,
+	}
 	//Creo un oggetto di tipo controllers Users
-	usersC := controllers.Users{}
+	usersC := controllers.Users{
+		UserService: &userService,
+	}
 	// faccio il parsing del template e lo salvo nel controllers Users.
 	//Così quando arriva la richiesta dal web, si dovrà solo eseguire il template
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
