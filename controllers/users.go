@@ -34,6 +34,12 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 
 //function that is going to handle the post request made on the form submission
 func (u Users) Create(w http.ResponseWriter, r *http.Request){
-	fmt.Fprintf(w,"La mail è:%s",r.FormValue("email"))
-	fmt.Fprintf(w,"La password è:%s",r.FormValue("password"))
+	email := r.FormValue("email")
+	password := r.FormValue("password")
+	user, err := u.UserService.Create(email, password)
+	if err != nil {
+		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "User created: %+v", user)
 }
