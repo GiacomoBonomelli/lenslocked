@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/GiacomoBonomelli/lenslocked/controllers"
@@ -14,7 +13,7 @@ import (
 	"github.com/gorilla/csrf"
 )
 
-func executeTemplate(w http.ResponseWriter, filepath string) {
+/* func executeTemplate(w http.ResponseWriter, filepath string) {
 	t, err := views.Parse(filepath) // fa il parsing del file html e mi restituisce un oggetto di tipo Template
 	if err != nil {
 		log.Printf("parsing template: %v", err)
@@ -22,7 +21,7 @@ func executeTemplate(w http.ResponseWriter, filepath string) {
 		return
 	}
 	t.Execute(w, nil)
-}
+} */
 
 func userHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html charset=utf-8")
@@ -118,7 +117,7 @@ func main() {
 	r.NotFound(notFoundHandler)
 
 	fmt.Println("Starting the server on :3000...")
-	csrfKey:="gFvi45R4fy5xNBlnEeZtQbfAVCYEIAUX"
+	csrfKey := "gFvi45R4fy5xNBlnEeZtQbfAVCYEIAUX"
 	csrfMw := csrf.Protect( //crea un Http Handler
 		[]byte(csrfKey),
 		// TODO: Fix this before deploying

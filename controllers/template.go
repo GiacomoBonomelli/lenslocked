@@ -6,5 +6,5 @@ import (
 
 type Template interface {
 	// i placeholder non sono obbligatori
-	Execute(w http.ResponseWriter, data interface{})
+	Execute(w http.ResponseWriter,r *http.Request, data interface{})
 }
