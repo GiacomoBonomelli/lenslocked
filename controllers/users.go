@@ -75,6 +75,8 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request){
 		Name: "email", // di solito sono brevi per non appesantire le risposte inviate dal server
 		Value: user.Email,
 		Path: "/",
+		HttpOnly: true, // l'accesso avviene solo tramite richieste HTTP.
+						// No Javascript per evitare attacchi XSS.
 	}	
 	http.SetCookie(w,&cookie)
 	fmt.Fprintf(w, "User authenticated: %+v", user)
