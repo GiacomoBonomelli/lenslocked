@@ -20,10 +20,21 @@ func Must(t Template, err error) (Template){
 
 // Per fare il parsing dei templates indipendentemente dalla loro posizione nel file system
 func ParseFS(fs fs.FS, patterns ...string) (Template,error){ //variadic parameter
-	tpl,err := template.ParseFS(fs,patterns...) //all'interno della funzione,patterns è usata come slice di stringhe
+	tpl:= template.New(patterns[0])
+	tpl=tpl.Funcs(
+		template.FuncMap{
+			"csrfField": func() template.HTML {
+				return `<input type="hidden" />`
+			},
+		},
+	)
+	tpl,err := tpl.ParseFS(fs,patterns...) 
+	//tpl è una variabile già esistente mentre err,no
+	//all'interno della funzione,patterns è usata come slice di stringhe
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template %w", err)
 	}
+	
 	return Template{
 		htmlTpl: tpl,
 	}, nil
