@@ -9,22 +9,13 @@ import (
 
 type Users struct {
 	Templates struct {
-		New    Template // it allows to create a Template object
+		New    Template
 		SignIn Template
 	}
-	UserService *models.UserService // collegamento tra il controller e il model. Permette di creare gli utenti
+	UserService *models.UserService
 }
 
-//new and edit to render forms
-//create and update to process forms
-
 func (u Users) New(w http.ResponseWriter, r *http.Request) {
-	//We need a view to render
-	//We need to parse the view before the controller
-	//handles this request.
-	//So its best practice to parse it somewhere else.
-
-	//execute the template
 	var data struct {
 		Email string
 	}
@@ -32,12 +23,12 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 	u.Templates.New.Execute(w, r, data)
 }
 
-// function that is going to handle the post request made on the form submission
 func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 	user, err := u.UserService.Create(email, password)
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 		return
 	}
@@ -45,12 +36,6 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u Users) SignIn(w http.ResponseWriter, r *http.Request) {
-	//We need a view to render
-	//We need to parse the view before the controller
-	//handles this request.
-	//So its best practice to parse it somewhere else.
-
-	//execute the template
 	var data struct {
 		Email string
 	}
@@ -67,16 +52,15 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 	data.Password = r.FormValue("password")
 	user, err := u.UserService.Authenticate(data.Email, data.Password)
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println(err)
 		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
 		return
 	}
 	cookie := http.Cookie{
-		Name:     "email", // di solito sono brevi per non appesantire le risposte inviate dal server
+		Name:     "email",
 		Value:    user.Email,
 		Path:     "/",
-		HttpOnly: true, // l'accesso avviene solo tramite richieste HTTP.
-		// No Javascript per evitare attacchi XSS.
+		HttpOnly: true,
 	}
 	http.SetCookie(w, &cookie)
 	fmt.Fprintf(w, "User authenticated: %+v", user)
@@ -85,8 +69,9 @@ func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
 	email, err := r.Cookie("email")
 	if err != nil {
-		fmt.Fprint(w, "The email cookie could not be read")
+		fmt.Fprint(w, "The email cookie could not be read.")
 		return
 	}
 	fmt.Fprintf(w, "Email cookie: %s\n", email.Value)
+	fmt.Fprintf(w, "Headers: %+v\n", r.Header)
 }

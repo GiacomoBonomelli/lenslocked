@@ -4,45 +4,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+    rel="stylesheet">
 </head>
 <body class="h-screen bg-gray-100">
-    <header class="bg-gradient-to-r from-blue-800 to-indigo-800">
-        <nav class="px-8 py-6 flex items-center text-white">
-            <div class="text-4xl pr-12 font-serif">Lenslocked</div>
-            <div class="flex-grow">
-                <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/">Home</a>
-                <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/contact">Contact</a>
-                <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/faq">FAQ</a>
-            </div>
-            <div>
-                <a class="pr-4" href="/signin">Sign in</a>
-                <a class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded" href="/signup">Sign up</a>
-            </div>
-        </nav>
-    </header>
+  <header class="bg-gradient-to-r from-blue-800 to-indigo-800 text-white">
+    <nav class="px-8 py-6 flex items-center space-x-12">
+      <div class="text-4xl font-serif">Lenslocked</div>
+      <div class="flex-grow">
+        <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/">
+          Home
+        </a>
+        <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/contact">
+          Contact
+        </a>
+        <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="/faq">
+          FAQ
+        </a>
+      </div>
+      <div class="space-x-4">
+        <a href="/signin">Sign in</a>
+        <a href="/signup" class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded">
+          Sign up
+        </a>
+      </div>
+    </nav>
+  </header>
 {{end}}
 
-
-<!-- Each page's content goes here -->
-
+<!-- Each page's content goes here. -->
 
 {{define "footer"}}
-<footer class="bg-gradient-to-r from-blue-800 to-indigo-800">
-    <div class="flex flex-row">
-        <nav class="px-8 py-6 flex items-center text-white flex-grow">
-            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Condizioni Generali</a>
-            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Regole della Privacy</a>
-            <a class="text-lg font-semibold hover:text-blue-100 pr-8" href="#">Uso dei Cookie</a>
-        </nav>
-        <div>
-            <a class="text-lg pr-2 text-white" href="https://facebook.com" target="_blank" ><i class="fa-brands fa-facebook"></i></a>
-            <a class="text-lg pr-2 text-white" href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-            <a class="text-lg pr-2 text-white" href="https://www.linkedin.com/zillow" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-        </div>
-    </div>
-</footer>
 </body>
 </html>
 {{end}}
