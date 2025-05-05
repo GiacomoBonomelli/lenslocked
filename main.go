@@ -15,15 +15,6 @@ import (
 func main() {
 	r := chi.NewRouter()
 
-	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(
-		templates.FS,
-		"home.gohtml", "tailwind.gohtml",
-	))))
-	r.Get("/contact", controllers.StaticHandler(views.Must(
-		views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
-	r.Get("/faq", controllers.FAQ(
-		views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
-
 	// Setup a database connection
 	cfg := models.DefaultPostgresConfig()
 	db, err := models.Open(cfg)
@@ -46,6 +37,14 @@ func main() {
 	usersC.Templates.SignIn = views.Must(views.ParseFS(
 		templates.FS, "signin.gohtml", "tailwind.gohtml"))
 	// r.Get("/signup", TimerMiddleware(usersC.New))
+	r.Get("/", controllers.StaticHandler(views.Must(views.ParseFS(
+		templates.FS,
+		"home.gohtml", "tailwind.gohtml",
+	))))
+	r.Get("/contact", controllers.StaticHandler(views.Must(
+		views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
+	r.Get("/faq", controllers.FAQ(
+		views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
 	r.Get("/signup", usersC.New)
 	r.Post("/signup", usersC.Create)
 	r.Get("/signin", usersC.SignIn)
