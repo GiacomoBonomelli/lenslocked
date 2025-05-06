@@ -21,7 +21,13 @@ func Open(config PostgresConfig) (*sql.DB, error) {
 		CREATE TABLE IF NOT EXISTS users(
     	id SERIAL PRIMARY KEY,
     	email TEXT UNIQUE NOT NULL,
-    	password_hash TEXT NOT NULL);`)
+    	password_hash TEXT NOT NULL);
+		
+		CREATE TABLE IF NOT EXISTS sessions (
+			id SERIAL PRIMARY KEY,
+			user_id INT UNIQUE,
+			token_hash TEXT UNIQUE NOT NULL);`)
+			
 	if err != nil {
 		panic(err)
 	}
