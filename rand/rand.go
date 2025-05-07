@@ -32,5 +32,6 @@ func String(n int) (string, error) {
 const SessionTokenBytes = 32
 
 func SessionToken() (string, error) {
+	// String è la funzione sopra
 	return String(SessionTokenBytes)
 }
