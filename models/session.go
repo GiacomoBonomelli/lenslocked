@@ -1,7 +1,9 @@
 package models
 
 import (
+	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"fmt"
 
 	"github.com/GiacomoBonomelli/lenslocked/rand"
@@ -41,11 +43,10 @@ func (ss *SessionService) Create(userID int) (*Session, error) {
 	if err != nil {
 		return nil, fmt.Errorf("create:%w", err)
 	}
-	// TODO: hash the session token
 	session := Session{
 		UserID: userID,
 		Token:  token,
-		// Set the TokenHash
+		TokenHash: ss.hash(token),
 	}
 
 	// TODO: store the session in our DB
@@ -55,4 +56,11 @@ func (ss *SessionService) Create(userID int) (*Session, error) {
 func (ss *SessionService) User(token string) (*User, error) {
 	// TODO:Implement SessionService.User
 	return nil, nil
+}
+
+// Una funzione che inizia con una lettera minuscola, non viene esportata al di fuori del file
+func (ss *SessionService) hash(token string) string{
+	tokenHash:= sha256.Sum256([]byte(token))
+	// convertire l'array di bytes in una slice di bytes
+	return base64.URLEncoding.EncodeToString(tokenHash[:])
 }

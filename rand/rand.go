@@ -9,6 +9,7 @@ import (
 func Bytes(n int) ([]byte, error) {
 	//creo una slice di byte
 	b := make([]byte, n)
+	// popola la slice di byte con dei numeri randomici
 	nRead, err := rand.Read(b)
 	if err != nil {
 		return nil, fmt.Errorf("bytes:%w", err)
