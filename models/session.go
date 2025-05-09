@@ -91,6 +91,16 @@ func (ss *SessionService) User(token string) (*User, error) {
 	return &user, nil
 }
 
+func (ss *SessionService) Delete(token string) error{
+	tokenhash := ss.hash(token)
+	_,err:= ss.DB.Exec(
+		`DELETE FROM sessions
+		 WHERE token_hash=$1;`,tokenhash)
+	if err!=nil{
+		return fmt.Errorf("delete:%w",err)
+	}
+	return nil
+}
 // Una funzione che inizia con una lettera minuscola, non viene esportata al di fuori del file
 func (ss *SessionService) hash(token string) string {
 	tokenHash := sha256.Sum256([]byte(token))
