@@ -16,11 +16,6 @@ func Open(config PostgresConfig) (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open: %w", err)
 	}
-
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Tables created")
 	return db, nil
 }
 
