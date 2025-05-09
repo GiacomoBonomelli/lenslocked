@@ -16,18 +16,7 @@ func Open(config PostgresConfig) (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open: %w", err)
 	}
-	
-	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS users(
-    	id SERIAL PRIMARY KEY,
-    	email TEXT UNIQUE NOT NULL,
-    	password_hash TEXT NOT NULL);
-		
-		CREATE TABLE IF NOT EXISTS sessions (
-			id SERIAL PRIMARY KEY,
-			user_id INT UNIQUE,
-			token_hash TEXT UNIQUE NOT NULL);`)
-			
+
 	if err != nil {
 		panic(err)
 	}
