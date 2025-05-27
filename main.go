@@ -24,21 +24,24 @@ func main() {
 	defer db.Close()
 
 	// Setup our model services
+	// Comunicazione con la base di dati
+	// Crea un servizio per gestire le operazioni relative agli utenti
 	userService := models.UserService{
 		DB: db,
 	}
 
+	// Crea un servizio per gestire le sessioni
 	sessionService := models.SessionService{
 		DB: db,
 	}
 
-	// Setup our controllers
+	// Crea un controller per gestire le operazioni relative agli utenti
 	usersC := controllers.Users{
 		UserService: &userService,
 		SessionService: &sessionService,
 	}
 
-	
+	// Setup our templates
 	usersC.Templates.New = views.Must(views.ParseFS(
 		templates.FS, "signup.gohtml", "tailwind.gohtml"))
 	usersC.Templates.SignIn = views.Must(views.ParseFS(
@@ -52,6 +55,7 @@ func main() {
 		views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
 	r.Get("/faq", controllers.FAQ(
 		views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
+	// Gestione dei form di registrazione e login
 	r.Get("/signup", usersC.New)
 	r.Post("/signup", usersC.Create)
 	r.Get("/signin", usersC.SignIn)
@@ -64,6 +68,7 @@ func main() {
 	})
 	fmt.Println("Starting the server on :3000...")
 
+	// Crea una chiave per la protezione CSRF
 	csrfKey := "gFvi45R4fy5xNBlnEeZtQbfAVCYEIAUX"
 	csrfMw := csrf.Protect(
 		[]byte(csrfKey),
@@ -71,6 +76,7 @@ func main() {
 		csrf.Secure(false),
 		csrf.TrustedOrigins([]string{"localhost:3000"}),
 	)
+	// Avvia il server
 	http.ListenAndServe(":3000", csrfMw(r))
 }
 

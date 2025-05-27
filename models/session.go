@@ -1,11 +1,10 @@
 package models
 
 import (
-	"crypto/sha256"
+	"crypto/sha256"		
 	"database/sql"
 	"encoding/base64"
 	"fmt"
-
 	"github.com/GiacomoBonomelli/lenslocked/rand"
 )
 
@@ -34,28 +33,38 @@ type SessionService struct {
 	BytesPerToken int
 }
 
+// Questa funzione viene utilizzata per creare una nuova sessione per l'utente.
 func (ss *SessionService) Create(userID int) (*Session, error) {
-	bytesPerToken := ss.BytesPerToken
+	// Se il valore di BytesPerToken non è impostato o è minore di minBytesPerToken,
+	// viene utilizzato il valore di minBytesPerToken.
+	bytesPerToken := ss.BytesPerToken	
 	if bytesPerToken < minBytesPerToken {
 		bytesPerToken = minBytesPerToken
 	}
-	token, err := rand.String(bytesPerToken) // restituisce il token di 32 bytes, stringato
+	// Viene generato un token di 32 bytes, stringato in base64
+	token, err := rand.String(bytesPerToken) 
 	if err != nil {
 		return nil, fmt.Errorf("create:%w", err)
 	}
+	// Viene creato un oggetto Session con i valori di userID, token e tokenHash
 	session := Session{
 		UserID:    userID,
 		Token:     token,
 		TokenHash: ss.hash(token),
 	}
 
-	// TODO: store the session in our DB
+	// Viene inserito il token hash nel database
+	// Se il token hash è già presente nel database, viene aggiornato il record
+	// con il nuovo token hash. Questo avviene perché l'utente ha già una sessione attiva.
 	row := ss.DB.QueryRow(`
 		UPDATE sessions
 		SET token_hash=$2
 		WHERE user_id = $1
 		RETURNING id;`, session.UserID, session.TokenHash)
 	err = row.Scan(&session.ID)
+
+	// Se il token hash non è presente nel database, viene creato un nuovo record
+	// nella tabella sessions con i valori di userID e tokenHash
 	if err == sql.ErrNoRows {
 		row = ss.DB.QueryRow(`
 		INSERT INTO sessions(user_id,token_hash)
@@ -69,9 +78,11 @@ func (ss *SessionService) Create(userID int) (*Session, error) {
 	return &session, nil
 }
 
+// Questa funzione viene utilizzata per ottenere l'utente associato a una sessione.
 func (ss *SessionService) User(token string) (*User, error) {
 	tokenHash := ss.hash(token)
 	var user User
+	// Viene selezionato l'utente associato al token hash
 	row := ss.DB.QueryRow(
 		`SELECT user_id 
 		 FROM sessions
@@ -80,6 +91,7 @@ func (ss *SessionService) User(token string) (*User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("user:%w", err)
 	}
+	// Viene selezionato l'email e il password hash dell'utente associato al token hash
 	row = ss.DB.QueryRow(
 		`SELECT email,password_hash 
 		 FROM users
@@ -103,7 +115,9 @@ func (ss *SessionService) Delete(token string) error{
 }
 // Una funzione che inizia con una lettera minuscola, non viene esportata al di fuori del file
 func (ss *SessionService) hash(token string) string {
+	// Viene creato un hash del token utilizzando SHA-256
 	tokenHash := sha256.Sum256([]byte(token))
-	// convertire l'array di bytes in una slice di bytes
+	// Viene convertito l'array di bytes in una slice di bytes e viene codificato in base64
+	// Viene codificato in base64 utilizzando la codifica URL
 	return base64.URLEncoding.EncodeToString(tokenHash[:])
 }
